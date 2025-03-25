@@ -4,7 +4,7 @@ import sys
 from pprint import pprint
 from configs.config import parser
 from dataset.data_module import DataModule
-from tools.callbacks import add_callbacks
+from lightning_tools.callbacks import add_callbacks
 from models.mrscore import MRScore
 import pytorch_lightning as pl
 from pytorch_lightning import seed_everything

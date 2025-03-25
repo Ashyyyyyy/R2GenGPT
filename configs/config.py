@@ -15,8 +15,9 @@ parser.add_argument('--num_workers', default=8, type=int, help="Cpu num for data
 
 # ========================= Model Settings ============================
 parser.add_argument('--vision_model', default='microsoft/swin-base-patch4-window7-224', type=str, help="vision model to use")
-parser.add_argument('--llama_model', default='meta-llama/Llama-2-7b-chat-hf', type=str, help="LLM model to use")
+parser.add_argument('--llm_model', default='meta-llama/Llama-2-7b-chat-hf', type=str, help="LLM model to use")
 parser.add_argument('--freeze_vm', default=True, type=lambda x: (str(x).lower() == 'true'), help='freeze vision model')
+parser.add_argument('--lora_inference', type=lambda x: str(x).lower() == 'true', default=False, help="Whether to use LoRA for inference (compatible with --llm_use_lora)")
 parser.add_argument('--llm_use_lora', default=False, type=lambda x: (str(x).lower() == 'true'), help="whether use lora for LLM model")
 parser.add_argument('--llm_r', default=16, type=int, help='The dimension used by the LoRA update matrices')
 parser.add_argument('--llm_alpha', default=16, type=int, help='Scaling factor.')
@@ -61,7 +62,9 @@ parser.add_argument('--precision', type=str, default='bf16-mixed', help='16 or 3
 parser.add_argument('--limit_val_batches', type=float, default=1.0, help='How much of validation dataset to check (float = fraction, int = num_batches).')
 parser.add_argument('--limit_test_batches', type=float, default=1.0, help='How much of test dataset to check (float = fraction, int = num_batches).')
 parser.add_argument('--limit_train_batches', type=float, default=1.0, help='How much of training dataset to check (float = fraction, int = num_batches)')
+parser.add_argument('--max_steps', type=int, default=-1, help='Total number of training steps. -1 means no limit (uses epochs instead)')
 parser.add_argument('--max_epochs', type=int, default=3, help='Stop training once this number of epochs is reached')
+parser.add_argument('--log_every_n_steps', type=int, default=10, help='How often to log within steps')
 parser.add_argument('--every_n_train_steps', type=int, default=0, help='How many training steps to save a checkpoint')
 parser.add_argument('--val_check_interval', type=float, default=1.0, help='How often to check the validation set')
 parser.add_argument('--accumulate_grad_batches', type=int, default=1, help='Accumulates gradients over k batches before stepping the optimizer')
