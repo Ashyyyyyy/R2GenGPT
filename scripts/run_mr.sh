@@ -3,7 +3,7 @@
 version=v1
 savepath="./save/$version"
 
-dataset='/home/yunyi/MRScore/MRScore_copy/meta_annotation.json'
+dataset='./data/meta_annotation.json'
 llm_model='mistralai/Mistral-7B-Instruct-v0.2'
 
 python -u train.py \
@@ -15,7 +15,7 @@ python -u train.py \
     --max_length 350 \
     --num_workers 8 \
     --learning_rate 0.00001 \
-    --devices 2 \
+    --devices 1 \
     --accelerator gpu \
     --precision bf16-mixed \
     --num_nodes 1 \

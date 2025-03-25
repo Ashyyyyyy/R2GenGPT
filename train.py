@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.append('/apdcephfs_qy3/share_733425/vinnylywang/zhanyuwang_qy3/Code/MRScore_v2/')
+# sys.path.append('/apdcephfs_qy3/share_733425/vinnylywang/zhanyuwang_qy3/Code/MRScore_v2/')
 from pprint import pprint
 from configs.config import parser
 from dataset.data_module import DataModule
