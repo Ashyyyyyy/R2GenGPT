@@ -90,7 +90,7 @@ delta用于保存每个epoch后的参数，只要有test就会保存。用于inf
 保存ckpt用于断点续读
 
 ```
---every_n_train_steps 40 \
+--every_n_train_steps 39 \
 ```
 
 读取ckpt
