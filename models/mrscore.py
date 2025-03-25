@@ -22,6 +22,11 @@ class MRScore(pl.LightningModule):
     """
     def __init__(self, args):
         super().__init__()
+
+        if isinstance(args, dict): # if load from ckpt, we need to change the types
+            from argparse import Namespace
+            args = Namespace(**args)
+
         self.args = args
         self.save_hyperparameters(args)
 
@@ -46,7 +51,7 @@ class MRScore(pl.LightningModule):
         self.val_score = 100.0
 
         if args.delta_file is not None:
-            state_dict = torch.load(args.delta_file, map_location='cpu')['model']
+            state_dict = torch.load(args.delta_file, map_location='cpu', weights_only=False)['model']
             self.load_state_dict(state_dict=state_dict, strict=False)
             print(f'Load checkpoint from {args.delta_file}')
 
@@ -123,10 +128,12 @@ class MRScore(pl.LightningModule):
 
     def on_validation_epoch_end(self):
         val_loss = []
+        print("[DEBUG] Validation epoch end triggered ✅")
         for i in self.val_step_outputs:
             val_loss.append(i['val_loss'].item())
         val_loss = np.mean(val_loss)
         if self.trainer.local_rank == 0:
+            print("[DEBUG] Save  checkpoint triggered ✅")
             self.save_checkpoint(val_loss)
 
     def configure_optimizers(self):

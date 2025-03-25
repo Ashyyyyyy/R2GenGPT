@@ -1,4 +1,4 @@
-# data_module
+# data_module.py
 
 import sys
 # sys.path.append('/apdcephfs/share_733425/vinnylywang/zhanyuwang/Code/xray_chat')
@@ -85,7 +85,7 @@ class DataModule(LightningDataModule):
         self.dataset = {
             "train": train_dataset, "validation": dev_dataset, "test": test_dataset
         }
-
+        # print("[DEBUG] Validation set size:", len(dev_dataset))
 
     def train_dataloader(self):
         """
