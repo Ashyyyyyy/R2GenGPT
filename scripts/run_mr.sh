@@ -10,10 +10,10 @@ python -u train.py \
     --dataset $dataset \
     --llm_model $llm_model \
     --lora_inference False \
-    --llm_r 32 \
-    --llm_alpha 32 \
-    --batch_size 2 \
-    --val_batch_size 8 \
+    --llm_r 16 \
+    --llm_alpha 16 \
+    --batch_size 8 \
+    --val_batch_size 24 \
     --max_length 350 \
     --num_workers 8 \
     --learning_rate 0.00001 \
@@ -22,7 +22,7 @@ python -u train.py \
     --precision bf16-mixed \
     --num_nodes 1 \
     --strategy ddp \
-    --max_epochs 30 \
+    --max_epochs 15 \
     --accumulate_grad_batches 2 \
     --num_sanity_val_steps 0 \
     --limit_val_batches 1.0 \
