@@ -4,12 +4,14 @@ version=v1
 savepath="./save/$version"
 
 dataset='./data/meta_annotation.json'
-llm_model='mistralai/Mistral-7B-Instruct-v0.2'
+llm_model='ministral/Ministral-3b-instruct'
 
 python -u train.py \
     --dataset $dataset \
     --llm_model $llm_model \
     --lora_inference False \
+    --llm_r 32 \
+    --llm_alpha 32 \
     --batch_size 2 \
     --val_batch_size 8 \
     --max_length 350 \
