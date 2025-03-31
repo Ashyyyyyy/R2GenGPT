@@ -3,7 +3,7 @@
 version=v1
 savepath="./save/$version"
 
-dataset='./data/meta_annotation.json'
+dataset='./data/mrscore_dataset.json'
 llm_model='ministral/Ministral-3b-instruct'
 
 python -u train.py \
