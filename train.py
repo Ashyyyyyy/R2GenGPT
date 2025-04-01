@@ -44,12 +44,11 @@ def train(args):
         logger=callbacks["loggers"]
     )
 
+    model = MRScore(args)
     if args.ckpt_file is not None:
-        model = MRScore.load_from_checkpoint(args.ckpt_file, strict=False)
+        trainer.fit(model, datamodule=dm, ckpt_path=args.ckpt_file)
     else:
-        model = MRScore(args)
-        
-    trainer.fit(model, datamodule=dm)
+        trainer.fit(model, datamodule=dm)
 
 
 def main():
