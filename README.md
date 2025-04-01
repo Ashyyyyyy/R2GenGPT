@@ -77,8 +77,6 @@ bash scripts/6-2.shallow_test.sh
 
 This repository is under [BSD 3-Clause License](LICENSE.md).
 
-
-
 # Note
 
 delta用于保存每个epoch后的参数，只要有test就会保存。用于inference。读取方式如下。
