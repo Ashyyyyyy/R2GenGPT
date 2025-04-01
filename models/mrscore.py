@@ -64,23 +64,39 @@ class MRScore(pl.LightningModule):
 
 
     def compute_loss(self, inputs, return_outputs=True):
-        rewards_chosen = F.sigmoid(self.model(
+        # raw data with rewards_chosen, rewards_rejected, custom_loss
+        rewards_chosen = self.model(
             input_ids=inputs["input_ids_chosen"],
             attention_mask=inputs["attention_mask_chosen"],
             return_dict=True,
-            )["logits"])
-        rewards_rejected = F.sigmoid(self.model(
+            )["logits"]
+        rewards_rejected = self.model(
             input_ids=inputs["input_ids_rejected"],
             attention_mask=inputs["attention_mask_rejected"],
             return_dict=True,
-            )["logits"])
+            )["logits"]
+        # normalized rewards_chosen, rewards_rejected
+        # rewards_chosen = F.sigmoid(self.model(
+        #     input_ids=inputs["input_ids_chosen"],
+        #     attention_mask=inputs["attention_mask_chosen"],
+        #     return_dict=True,
+        #     )["logits"])
+        # rewards_rejected = F.sigmoid(self.model(
+        #     input_ids=inputs["input_ids_rejected"],
+        #     attention_mask=inputs["attention_mask_rejected"],
+        #     return_dict=True,
+        #     )["logits"])
+
+        # custom loss
+        # loss = self.custom_loss(rewards_chosen, rewards_rejected, inputs["margin"])
+
         # calculate loss, optionally modulate with margin
-        # if "margin" in inputs:
-        #     loss = -F.logsigmoid(rewards_chosen - rewards_rejected - inputs["margin"]).mean()
-        # else:
-        #     loss = -F.logsigmoid(rewards_chosen - rewards_rejected).mean()
+        if "margin" in inputs:
+            loss = -F.logsigmoid(rewards_chosen - rewards_rejected - inputs["margin"]).mean()
+        else:
+            loss = -F.logsigmoid(rewards_chosen - rewards_rejected).mean()
             
-        loss = self.custom_loss(rewards_chosen, rewards_rejected, inputs["margin"])
+
         
         if return_outputs:
                 return loss, {
