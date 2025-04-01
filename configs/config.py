@@ -66,6 +66,7 @@ parser.add_argument('--max_steps', type=int, default=-1, help='Total number of t
 parser.add_argument('--max_epochs', type=int, default=3, help='Stop training once this number of epochs is reached')
 parser.add_argument('--log_every_n_steps', type=int, default=10, help='How often to log within steps')
 parser.add_argument('--every_n_train_steps', type=int, default=0, help='How many training steps to save a checkpoint')
+parser.add_argument('--every_n_epochs', type=int, default=0, help='How many epochs to save a checkpoint')
 parser.add_argument('--val_check_interval', type=float, default=1.0, help='How often to check the validation set')
 parser.add_argument('--accumulate_grad_batches', type=int, default=1, help='Accumulates gradients over k batches before stepping the optimizer')
 parser.add_argument("--num_sanity_val_steps", type=int, default=2, help='Sanity check runs n validation batches before starting the training routine')

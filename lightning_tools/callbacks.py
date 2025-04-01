@@ -16,11 +16,13 @@ def add_callbacks(args):
     # --------- Add Callbacks
     checkpoint_callback = ModelCheckpoint(
         dirpath=os.path.join(log_dir, "checkpoints"),
-        filename="{epoch}-{step}",
+        filename="{epoch}",
         save_top_k=-1,
+        save_last=True,
+        save_weights_only=False,
         every_n_train_steps=args.every_n_train_steps,
-        save_last=False,
-        save_weights_only=False
+        every_n_epochs=args.every_n_epochs,
+        save_on_train_epoch_end=True
     )
     
     lr_monitor_callback = LearningRateMonitor(logging_interval='step')
