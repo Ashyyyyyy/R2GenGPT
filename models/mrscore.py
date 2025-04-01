@@ -121,7 +121,10 @@ class MRScore(pl.LightningModule):
     
     def validation_step(self, batch, batch_idx):
         to_log = {}
-        loss, logits = self.compute_loss(inputs=batch)      
+        loss, logits = self.compute_loss(inputs=batch)
+        # save val_loss to log
+        self.log("val_loss", loss, on_epoch=True, prog_bar=True, logger=True)
+
         to_log['val_loss'] = loss
         self.val_step_outputs.append({"val_loss": loss})
         return to_log
