@@ -23,7 +23,6 @@ python -u train.py \
     --num_nodes 1 \
     --strategy ddp \
     --max_epochs 15 \
-    --every_n_train_steps 5000 \
     --accumulate_grad_batches 2 \
     --num_sanity_val_steps 0 \
     --limit_val_batches 1.0 \
