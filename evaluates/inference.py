@@ -21,12 +21,6 @@ from transformers import AutoTokenizer
 from models.mrscore import MRScore
 from tqdm import tqdm
 
-def str2bool(v):
-    if isinstance(v, bool): return v
-    if v.lower() in ("yes", "true", "t", "1", "True"): return True
-    elif v.lower() in ("no", "false", "f", "0", "False"): return False
-    else: raise argparse.ArgumentTypeError("Boolean value expected.")
-
 def main(input_file, delta_file, output_file, lora_inference, batch_size):
     # Device
 
@@ -61,7 +55,7 @@ def main(input_file, delta_file, output_file, lora_inference, batch_size):
     with open(input_file, "r") as f:
         dataset = json.load(f)
 
-    os.makedirs(os.path.dirname("./results"), exist_ok=True)
+    os.makedirs("./results", exist_ok=True)
     output_file = os.path.join("./results", output_file)
 
     # 写入 CSV 文件
@@ -99,9 +93,9 @@ def main(input_file, delta_file, output_file, lora_inference, batch_size):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Batch inference with MRScore")
     parser.add_argument("input_file", type=str, help="Path to the input JSON file")
-    parser.add_argument("--delta_file", type=str, required=True, help="Path to LoRA delta .pth file")
+    parser.add_argument('--delta_file', type=str, default=None, help='the delta file to load')
     parser.add_argument("--output_file", type=str, default="mrscore_predictions.csv", help="Path to output CSV file")
-    parser.add_argument("--lora_inference", type=str2bool, default=True, help="Whether to use LoRA inference (True/False)")
+    parser.add_argument('--lora_inference', type=lambda x: str(x).lower() == 'true', default=False, help="Whether to use LoRA for inference (compatible with --llm_use_lora)")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size for inference")
 
     args = parser.parse_args()
