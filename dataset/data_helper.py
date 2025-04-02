@@ -36,9 +36,9 @@ class FieldParser:
         return input_ids, attention_mask
 
     def parse(self, features):
-        chose = features['chosen']
-        rejected = features['rejected']
-        
+        chose = f"Ground Truth Answer: {features['gt']} \n\n Generated Answer: {features['chosen']}"
+        rejected = f"Ground Truth Answer: {features['gt']} \n\n Generated Answer: {features['rejected']}"
+
         input_ids_chosen, attention_mask_chosen = self.tokenize(chose)
         input_ids_rejected, attention_mask_rejected = self.tokenize(rejected)
         margin = features['margin']

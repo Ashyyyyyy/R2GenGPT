@@ -10,8 +10,8 @@ python -u train.py \
     --dataset $dataset \
     --llm_model $llm_model \
     --lora_inference False \
-    --llm_r 16 \
-    --llm_alpha 16 \
+    --llm_r 32 \
+    --llm_alpha 64 \
     --batch_size 8 \
     --val_batch_size 24 \
     --max_length 350 \
