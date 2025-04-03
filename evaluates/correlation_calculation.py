@@ -6,7 +6,7 @@ import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 
 # 读取CSV文件
-file_dir = r"H:\Research\results\llama r=32 alpha=64 MRScore_save_2025-04-02_16-33-59\mrscore_predictions.csv"
+file_dir = r"H:\Research\results\llama r=32 alpha=64 MRScore_save_2025-04-02_16-33-59\llama3_prompt_score_output.csv"
 df = pd.read_csv(file_dir)
 
 print("列名：", df.columns)
