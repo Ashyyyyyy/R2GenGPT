@@ -28,15 +28,15 @@ for entry in tqdm(dataset):
     gt_answer = entry["gt_answer"]
     gen_answer = entry["generated_answer"]
 
-    prompt = f"""You are a medical expert evaluating generated radiology reports.
+    prompt = f"""You are a medical expert evaluating generated radiology answers.
 
-    Ground Truth Report:
+    Ground Truth Answer:
     {gt_answer}
 
-    Generated Report:
+    Generated Answer:
     {gen_answer}
 
-    Please rate the quality of the generated report from 0 (worst) to 3 (best), awarding 1 point for each of the following criteria:
+    Please rate the quality of the generated answer from 0 (worst) to 3 (best), awarding 1 point for each of the following criteria:
 
     1. Grammar: The answer is well-formed and grammatically correct.
     2. Information Retrieval: The answer is relevant to the image-question pair and demonstrates appropriate knowledge and information retrieval.
