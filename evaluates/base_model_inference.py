@@ -6,7 +6,14 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from tqdm import tqdm
 
-MODEL_NAME = "meta-llama/Llama-3.2-3B"  # 也可以用你自己的权重路径
+# MODEL_NAME = "meta-llama/Llama-3.2-3B"
+# MODEL_NAME = "ministral/Ministral-3b-instruct"
+# MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2"
+MODEL_NAME = "meta-llama/Llama-2-7b-hf"
+# MODEL_NAME = "meta-llama/Llama-2-7b-chat-hf"
+
+
+output_file = "Llama-2-7b-hf_prompt_score_output.csv"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -28,6 +35,8 @@ for entry in tqdm(dataset):
     gt_answer = entry["gt_answer"]
     gen_answer = entry["generated_answer"]
 
+
+    # for large model over 3b
     prompt = f"""You are a medical expert evaluating generated radiology answers.
 
     Ground Truth Answer:
@@ -42,18 +51,34 @@ for entry in tqdm(dataset):
     2. Information Retrieval: The answer is relevant to the image-question pair and demonstrates appropriate knowledge and information retrieval.
     3. Medical Assessment: The answer addresses the clinical/medical problem appropriately.
 
+    ONLY respond with a single number between 0 and 3. Do NOT include any explanation or extra text.
+
     Total Score (0–3):
     """
+
+    # # for small model under 3b
+    # prompt = f"""You are a medical expert evaluating generated radiology answers.
+
+    # Ground Truth Answers:
+    # {gt_answer}
+
+    # Generated Answers:
+    # {gen_answer}
+
+    # Please rate the quality of the generated answers from 0 (worst) to 3 (best), based on grammar, information retrieval, and medical aassessment.
+
+    # Score:"""
 
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
     with torch.no_grad():
         output = model.generate(
             **inputs,
-            max_new_tokens=10,
+            max_new_tokens=3,
             do_sample=False,
             num_beams=1,
             temperature=0.0,
+            early_stopping=True,
             pad_token_id=tokenizer.pad_token_id,
             eos_token_id=tokenizer.eos_token_id,
         )
@@ -68,12 +93,12 @@ for entry in tqdm(dataset):
     except Exception:
         score = -1  # 无法识别
 
-    results.append({"gt_score": gt_score, "marked_score": score})
+    results.append({"gt_score": gt_score, "marked_score": score, "model_output": generated_score_text})
 
 # 写入 CSV
-with open("llama3_prompt_score_output.csv", "w", newline='') as f:
-    writer = csv.DictWriter(f, fieldnames=["gt_score", "marked_score"])
+with open(output_file, "w", newline='') as f:
+    writer = csv.DictWriter(f, fieldnames=["gt_score", "marked_score", "model_output"])
     writer.writeheader()
     writer.writerows(results)
 
-print("✅ Finished scoring with LLaMA-3 prompt method.")
+print(f"✅ Finished scoring with {MODEL_NAME} method.")
