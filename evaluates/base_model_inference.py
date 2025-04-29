@@ -58,7 +58,7 @@ for entry in tqdm(dataset):
     # """
 
     ## for large model with examples:
-    f"""You are a medical expert evaluating generated radiology answers.
+    prompt = f"""You are a medical expert evaluating generated radiology answers.
 
     Ground Truth Answer:
     {gt_answer}
@@ -100,44 +100,44 @@ for entry in tqdm(dataset):
     
     """
 
-    # for small model under 3b
-    prompt = f"""You are a medical expert evaluating generated radiology answers.
-
-    Ground Truth Answers:
-    {gt_answer}
-
-    Generated Answers:
-    {gen_answer}
-
-    Please rate the quality of the generated answers from 0 (worst) to 3 (best), based on grammar, information retrieval, and medical assessment.
-
-    Score:"""
+    # # for small model under 3b
+    # prompt = f"""You are a medical expert evaluating generated radiology answers.
+    #
+    # Ground Truth Answers:
+    # {gt_answer}
+    #
+    # Generated Answers:
+    # {gen_answer}
+    #
+    # Please rate the quality of the generated answers from 0 (worst) to 3 (best), based on grammar, information retrieval, and medical assessment.
+    #
+    # Score:"""
 
     ## For small model with examples
-    f"""You are a medical expert rating a generated radiology answer.
-    
-    Ground Truth:
-    {gt_answer}
-    
-    Generated Answer:
-    {gen_answer}
-    
-    Scoring rules (0 to 3 points, 1 point each):
-    - Grammar: Well-formed, grammatically correct.
-    - Information Retrieval: Relevant and accurate.
-    - Medical Assessment: Correct clinical evaluation.
-    
-    Examples:
-    - "right area" → "possibly on the right" → 2
-    - "small" → "Big lungs." → 0
-    - "edema" → "The abnormality observed in the right lower lung is edema." → 3
-    - "the right lower lung" → "the left lung" → 1
-    
-    Only reply with a single number: 0, 1, 2, or 3. No explanation.
-    
-    Total Score:
-
-    """
+    # prompt = f"""You are a medical expert rating a generated radiology answer.
+    #
+    # Ground Truth:
+    # {gt_answer}
+    #
+    # Generated Answer:
+    # {gen_answer}
+    #
+    # Scoring rules (0 to 3 points, 1 point each):
+    # - Grammar: Well-formed, grammatically correct.
+    # - Information Retrieval: Relevant and accurate.
+    # - Medical Assessment: Correct clinical evaluation.
+    #
+    # Examples:
+    # - "right area" → "possibly on the right" → 2
+    # - "small" → "Big lungs." → 0
+    # - "edema" → "The abnormality observed in the right lower lung is edema." → 3
+    # - "the right lower lung" → "the left lung" → 1
+    #
+    # Only reply with a single number: 0, 1, 2, or 3. No explanation.
+    #
+    # Total Score:
+    #
+    # """
 
     # # For Ministral 3b
     # prompt = f"""
