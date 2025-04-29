@@ -4,7 +4,7 @@ version=v1
 savepath="./save/$version"
 
 dataset='./data/mrscore_dataset.json'
-llm_model='ministral/Ministral-3b-instruct'
+llm_model='meta-llama/Llama-3.2-3B'
 
 python -u train.py \
     --dataset $dataset \
