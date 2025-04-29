@@ -147,12 +147,12 @@ class MRScore(pl.LightningModule):
 
     def on_validation_epoch_end(self):
         val_loss = []
-        print("[DEBUG] Validation epoch end triggered ✅")
+        # print("[DEBUG] Validation epoch end triggered ✅")
         for i in self.val_step_outputs:
             val_loss.append(i['val_loss'].item())
         val_loss = np.mean(val_loss)
         if self.trainer.local_rank == 0:
-            print("[DEBUG] Save  checkpoint triggered ✅")
+            # print("[DEBUG] Save  checkpoint triggered ✅")
             self.save_checkpoint(val_loss)
 
     def configure_optimizers(self):

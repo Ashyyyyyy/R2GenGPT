@@ -22,7 +22,7 @@ python -u train.py \
     --precision bf16-mixed \
     --num_nodes 1 \
     --strategy ddp \
-    --max_epochs 15 \
+    --max_epochs 30 \
     --accumulate_grad_batches 2 \
     --num_sanity_val_steps 0 \
     --limit_val_batches 1.0 \
