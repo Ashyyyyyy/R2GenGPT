@@ -98,9 +98,9 @@ class MRScore(pl.LightningModule):
 
         # use sigmoided rewards and normalized margin
         if "margin" in inputs:
-            loss = -F.logsigmoid(rewards_chosen - rewards_rejected - inputs["margin"]/3).mean()
+            loss = ((rewards_chosen - rewards_rejected - inputs["margin"]/3)**2).mean()
         else:
-            loss = -F.logsigmoid(rewards_chosen - rewards_rejected).mean()
+            loss = ((rewards_chosen - rewards_rejected)**2).mean()
             
 
         
