@@ -65,42 +65,48 @@ class MRScore(pl.LightningModule):
 
     def compute_loss(self, inputs, return_outputs=True):
         # raw data with rewards_chosen, rewards_rejected, custom_loss
-        # rewards_chosen = self.model(
-        #     input_ids=inputs["input_ids_chosen"],
-        #     attention_mask=inputs["attention_mask_chosen"],
-        #     return_dict=True,
-        #     )["logits"]
-        # rewards_rejected = self.model(
-        #     input_ids=inputs["input_ids_rejected"],
-        #     attention_mask=inputs["attention_mask_rejected"],
-        #     return_dict=True,
-        #     )["logits"]
-        # normalized rewards_chosen, rewards_rejected
-        rewards_chosen = F.sigmoid(self.model(
+        rewards_chosen = self.model(
             input_ids=inputs["input_ids_chosen"],
             attention_mask=inputs["attention_mask_chosen"],
             return_dict=True,
-            )["logits"])
-        rewards_rejected = F.sigmoid(self.model(
+            )["logits"]
+        rewards_rejected = self.model(
             input_ids=inputs["input_ids_rejected"],
             attention_mask=inputs["attention_mask_rejected"],
             return_dict=True,
-            )["logits"])
+            )["logits"]
+        # normalized rewards_chosen, rewards_rejected
+        # rewards_chosen = F.sigmoid(self.model(
+        #     input_ids=inputs["input_ids_chosen"],
+        #     attention_mask=inputs["attention_mask_chosen"],
+        #     return_dict=True,
+        #     )["logits"])
+        # rewards_rejected = F.sigmoid(self.model(
+        #     input_ids=inputs["input_ids_rejected"],
+        #     attention_mask=inputs["attention_mask_rejected"],
+        #     return_dict=True,
+        #     )["logits"])
 
         # custom loss
         # loss = self.custom_loss(rewards_chosen, rewards_rejected, inputs["margin"])
 
-        # calculate loss, optionally modulate with margin
-        # if "margin" in inputs:
-        #     loss = -F.logsigmoid(rewards_chosen - rewards_rejected - inputs["margin"]).mean()
-        # else:
-        #     loss = -F.logsigmoid(rewards_chosen - rewards_rejected).mean()
-
-        # use sigmoided rewards and normalized margin
+        # calculate loss with logsigmoid, optionally modulate with margin
         if "margin" in inputs:
-            loss = ((rewards_chosen - rewards_rejected - inputs["margin"]/3)**2).mean()
+            loss = -F.logsigmoid(rewards_chosen - rewards_rejected - inputs["margin"]).mean()
+        else:
+            loss = -F.logsigmoid(rewards_chosen - rewards_rejected).mean()
+
+        # calculate loss with MSE, optionally modulate with margin
+        if "margin" in inputs:
+            loss = ((rewards_chosen - rewards_rejected - inputs["margin"])**2).mean()
         else:
             loss = ((rewards_chosen - rewards_rejected)**2).mean()
+
+        # # use sigmoided rewards and normalized margin
+        # if "margin" in inputs:
+        #     loss = ((rewards_chosen - rewards_rejected - inputs["margin"]/3)**2).mean()
+        # else:
+        #     loss = ((rewards_chosen - rewards_rejected)**2).mean()
             
 
         
